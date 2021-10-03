@@ -17,7 +17,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        //Asociar variable correo con el layout de la app
         Correo = findViewById(R.id.Correo);
+
         Contraseña = findViewById(R.id.Contraseña);
         Login = findViewById(R.id.login);
         String correo = Correo.getText().toString();
