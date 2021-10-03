@@ -2,6 +2,7 @@ package com.mrz.asstn;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(LoginActivity.this, correo ,Toast.LENGTH_LONG).show();
                 Toast.makeText(LoginActivity.this, contraseña,Toast.LENGTH_LONG).show();
+                Intent asd = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(asd);
+                finish();
             }
         });
     }
