@@ -17,20 +17,26 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        //Asociar variable correo con el layout de la app
+        //Asociar variable correo con el EditText del layout de la app
         Correo = findViewById(R.id.Correo);
-
+        //Asociar variable contraseña con el EditText del layout de la app
         Contraseña = findViewById(R.id.Contraseña);
+        //Asociar variable Login con el boton en el layout
         Login = findViewById(R.id.login);
-        String correo = Correo.getText().toString();
-        String contraseña = Contraseña.getText().toString();
+        //Dar una interaccion al tocar el boton login
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(LoginActivity.this, correo ,Toast.LENGTH_LONG).show();
-                Toast.makeText(LoginActivity.this, contraseña,Toast.LENGTH_LONG).show();
+                //Obtener el texto del correo
+                String correo = Correo.getText().toString();
+                //Obtener el texto de la contraseña
+                String contraseña = Contraseña.getText().toString();
+
+                //Declarar cambio de actividades
                 Intent asd = new Intent(LoginActivity.this, MainActivity.class);
+                //Ejecutar cambio de actividades
                 startActivity(asd);
+                //Finalizar actividad principal
                 finish();
             }
         });
