@@ -68,14 +68,14 @@
 
 
                     <Button
-                        android:id="@+id/shownbtn"
+                        android:id="@+id/startbtn"
                         android:layout_width="283dp"
                         android:layout_height="47dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="84dp"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/btn_green"
-                        android:text="Ver ausentes"
+                        android:text="Escanear alumnos"
                         android:textColor="#FFF"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.492"
