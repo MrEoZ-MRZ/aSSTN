@@ -3,6 +3,7 @@ package com.mrz.asstn;
 import static com.mrz.asstn.dbContract.aSSTNEntry.COLUM_DNI;
 import static com.mrz.asstn.dbContract.aSSTNEntry.COLUM_NA;
 import static com.mrz.asstn.dbContract.aSSTNEntry.TABLE_6B;
+import static com.mrz.asstn.dbHelper.IngresarAlumno;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private Button Añadir;
     //Lista de presentes
     private StringBuilder Presentes;
+    dbHelper mDBHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,27 +59,36 @@ public class MainActivity extends AppCompatActivity {
     }
     private void handleResult(IntentResult scanResult, int Code) {
         if (scanResult != null) {
-            if (Code == 1) {
-                updateUI(scanResult.getContents());
-            } if (Code == 2){
-                addUI(scanResult.getContents());
-            }
+            updateUI(scanResult.getContents());
         } else {
             Toast.makeText(this, "No se ha leído nada :(", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void addUI(String contents) {
-        Toast.makeText(this,contents,Toast.LENGTH_LONG).show();
-    }
-
     private void updateUI(String scan_result) {
-        dbHelper dbHelper = new dbHelper(this);
-        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
-        @SuppressLint("Recycle") Cursor cursor = sqLiteDatabase.rawQuery("select * from " + TABLE_6B + " where " + COLUM_DNI +" = " + scan_result, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            String name = cursor.getString(cursor.getColumnIndex(COLUM_NA));
-            Toast.makeText(MainActivity.this, name, Toast.LENGTH_LONG).show();
+        mDBHelper = new dbHelper(this);
+        Cursor result = mDBHelper.BuscarAlumno(scan_result);
+        while (result.moveToNext()){
+            String RESULTADO = result.getString(result.getColumnIndex(dbHelper.NOMBRE_Y_APPELIDO_COL));
+            String[] SPLIT = RESULTADO.split("@");
+            String APPELLIDO = SPLIT[1];
+            String NOMBRE = SPLIT[2];
+            Toast.makeText(this,APPELLIDO+" "+NOMBRE,Toast.LENGTH_SHORT).show();
+            return;
+        } if (!result.moveToNext()){
+            String RESULTADO = result.getString(result.getColumnIndex(dbHelper.NOMBRE_Y_APPELIDO_COL));
+            String[] SPLIT = RESULTADO.split("@");
+            String APPELLIDO = SPLIT[1];
+            String NOMBRE = SPLIT[2];
+            String SEXO = SPLIT[3];
+            String DNI = SPLIT[4];
+
+            boolean añadido = dbHelper.IngresarAlumno(APPELLIDO+" "+NOMBRE,DNI,SEXO,this);
+            if(añadido){
+                Toast.makeText(this,"Se ha añadido correctamente el alumno",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Toast.makeText(this,"No se ha podido añadir",Toast.LENGTH_SHORT).show();
         }
     }
 
