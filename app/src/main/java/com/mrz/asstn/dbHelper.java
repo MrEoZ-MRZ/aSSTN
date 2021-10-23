@@ -17,6 +17,7 @@ public class dbHelper extends SQLiteOpenHelper {
 
     // below variable is for our table name.
     private static final String TABLE_NAME = "SextoB";
+    private static final String DB_NAME = "IngresAR";
 
     // below variable is for our id column.
     private static final String ID_COL = "id";
@@ -34,7 +35,7 @@ public class dbHelper extends SQLiteOpenHelper {
 
     // creating a constructor for our database handler.
     public dbHelper(Context context) {
-        super(context, TABLE_NAME, null, DB_VERSION);
+        super(context, DB_NAME, null, DB_VERSION);
     }
 
     // below method is for creating a database by running a sqlite query
@@ -58,23 +59,25 @@ public class dbHelper extends SQLiteOpenHelper {
     public Cursor BuscarAlumno(String id){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         //String qry = "SELECT * FROM "+TABLE_NAME+" WHERE ID="+id;
-        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE DNI_COL="+id,null);
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE "+DNI_COL+" LIKE "+ "'"+ id + "'",null);
         return cursor;
     }
-    public Cursor BuscarPresente(String id){
+
+    public Cursor BuscarPresente(String id, Context ctx){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         //String qry = "SELECT * FROM "+TABLE_NAME+" WHERE ID="+id;
-        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM "+getTodaysTable()+" WHERE DNI_COL="+id,null);
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM "+getTodaysTable(ctx)+" WHERE "+DNI_COL+" LIKE "+ "'"+ id + "'",null);
         return cursor;
     }
 
     // this method is use to add new course to our sqlite database.
-    public boolean IngresarAsistencia(String Nombre, String DNI, String genero, String Presente) {
+    public static boolean IngresarAsistencia(String Nombre, String DNI, String genero, String Presente,Context ctx) {
 
         // on below line we are creating a variable for
         // our sqlite database and calling writable method
         // as we are writing data in our database.
-        SQLiteDatabase db = this.getWritableDatabase();
+        dbHelper dbhelp = new dbHelper(ctx);
+        SQLiteDatabase db = dbhelp.getWritableDatabase();
 
         // on below line we are creating a
         // variable for content values.
@@ -89,8 +92,9 @@ public class dbHelper extends SQLiteOpenHelper {
 
         // after adding all values we are passing
         // content values to our table.
-        return db.insert(getTodaysTable(), null, values) > 0;
+        return db.insert(getTodaysTable(ctx), null, values) > 0;
     }
+
     // this method is use to add new course to our sqlite database.
     public static boolean IngresarAlumno(String Nombre, String DNI, String genero,Context ctx) {
 
@@ -115,9 +119,9 @@ public class dbHelper extends SQLiteOpenHelper {
         // content values to our table.
         return db.insert(TABLE_NAME, null, values) > 0;
     }
-
-    SQLiteDatabase db;
-    private boolean VerificarExistencia(String tableName) {
+    private static boolean VerificarExistencia(String tableName, Context ctx) {
+        dbHelper dbhelp = new dbHelper(ctx);
+        SQLiteDatabase db = dbhelp.getWritableDatabase();
         boolean rv = false;
         String whereclause = "name" + "=? AND " + "type" + "=?";
         String[] whereargs = new String[]{tableName,"table"};
@@ -133,7 +137,7 @@ public class dbHelper extends SQLiteOpenHelper {
         return rv;
     }
 
-    private String Creartabladiaria() {
+    private static String Creartabladiaria() {
         return "CREATE TABLE IF NOT EXISTS " + getCurrentTableName() +
                 "(" +
                 ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -146,15 +150,20 @@ public class dbHelper extends SQLiteOpenHelper {
     SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-YYYY");
     String currentTableName;
 
-    private String getTodaysTable() {
+    private static String getTodaysTable(Context ctx) {
+        dbHelper dbhelp = new dbHelper(ctx);
+        SQLiteDatabase db = dbhelp.getWritableDatabase();
+        String currentTableName;
         currentTableName = getCurrentTableName();
-        if (!VerificarExistencia(currentTableName)) {
+        if (!VerificarExistencia(currentTableName,ctx)) {
             db.execSQL(Creartabladiaria());
         }
         return currentTableName;
     }
 
-    private String getCurrentTableName() {
+    private static String getCurrentTableName() {
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-YYYY");
+        String currentTableName;
         return currentTableName = "[" + currentDate.format(System.currentTimeMillis()) + "]";
     }
 
