@@ -1,14 +1,9 @@
 package com.mrz.asstn;
 
-import static com.mrz.asstn.dbHelper.DNI_COL;
-import static com.mrz.asstn.dbHelper.GENERO_COL;
 import static com.mrz.asstn.dbHelper.NOMBRE_Y_APPELIDO_COL;
-import static com.mrz.asstn.dbHelper.TABLE_NAME;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,29 +15,36 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
-    //Declarar boton
+    //Declarar botones
     private Button Escanear;
     private Button Añadir;
 
     //Declarar base de datos
     dbHelper mDBHelper;
 
+    //Funcion onCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        VerificarSiSeBoteo();
+        Verificacion();
     }
 
-    private void VerificarSiSeBoteo() {
-        if(!Preferencias.with(this).read("FirstBoot").equals("false")) {
-            Log.d("IngresAR","Alumnos añadidos");
-            dbHelper.AñadirAlumnos(this);
-            Preferencias.with(this).write("FirstBoot","false");
+    //Funcion de verificacion de alumnos
+    private void Verificacion() {
+        if(!Preferencias.with(this).read(getCurrentTableName()).equals("true")) {
+            Log.d("IngresAR","Fecha: "+getCurrentTableName());
+            dbHelper.AñadirSextoB(this);
+            Log.d("IngresAR","Alumnos de Sexto B añadidos");
+            Preferencias.with(this).write(getCurrentTableName(),"true");
         }
         ConstruirSentencia();
     }
 
+    //Crear vista principal y dar funcion a los botones
     private void ConstruirSentencia() {
         mDBHelper = new dbHelper(MainActivity.this);
         //Establecer vista principal
@@ -63,14 +65,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Verificar resultado de escaneo
     private void handleResult(IntentResult scanResult) {
-        if (scanResult != null) {
+        if (scanResult != null && scanResult.getContents().contains("@")) {
             updateUI(scanResult.getContents());
         } else {
             Toast.makeText(this, "No se ha leído nada :(", Toast.LENGTH_SHORT).show();
         }
     }
 
+    //Dividir resultado y añadirlo a la base de datos
     private void updateUI(String scan_result) {
         mDBHelper = new dbHelper(MainActivity.this);
         String[] SPLIT = scan_result.split("@");
@@ -78,24 +82,32 @@ public class MainActivity extends AppCompatActivity {
         String NOMBRE = SPLIT[2];
         String SEXO = SPLIT[3];
         String DNI = SPLIT[4];
-        Cursor result = mDBHelper.BuscarAlumno(DNI);
+        Cursor result = mDBHelper.BuscarAlumno(DNI,this);
+        Calendar calendar = Calendar.getInstance();
+        int hour24hrs = calendar.get(Calendar.HOUR_OF_DAY);
+        int minutes = calendar.get(Calendar.MINUTE);
+        int seconds = calendar.get(Calendar.SECOND);
         while (result.moveToNext()){
             String RESULTADO = result.getString(result.getColumnIndex(NOMBRE_Y_APPELIDO_COL));
             dbHelper.IngresarAsistencia(DNI,"Presente",this);
-            Toast.makeText(this,RESULTADO + " PRESENTE",Toast.LENGTH_SHORT).show();
+            if(hour24hrs >= 8){
+                Toast.makeText(this,RESULTADO + " TARDANZA",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this,RESULTADO + " PRESENTE",Toast.LENGTH_SHORT).show();
+            }
             return;
         } if (!result.moveToNext()){
-            boolean añadido = dbHelper.IngresarAlumno(NOMBRE+" "+APPELLIDO,DNI,SEXO,this);
-            if(añadido){
-                dbHelper.IngresarAsistencia(DNI,"Presente",this);
-                Toast.makeText(this,"Alumno " + NOMBRE + " Añadido al curso",Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Toast.makeText(this,"No se ha podido añadir",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"No se ha podido encontrar a "+NOMBRE + " "+APPELLIDO,Toast.LENGTH_SHORT).show();
         }
     }
 
+    //Obtener fecha actual
+    private static String getCurrentTableName() {
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-YYYY");
+        return "[" + currentDate.format(System.currentTimeMillis()) + "]";
+    }
 
+    //Actividad de resultado, aqui se obtiene el resultado de escaneo
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);

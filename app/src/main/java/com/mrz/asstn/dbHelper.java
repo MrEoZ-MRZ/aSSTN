@@ -10,104 +10,70 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class dbHelper extends SQLiteOpenHelper {
 
-    // below int is our database version
+    //Version de la tabla
     private static final int DB_VERSION = 1;
 
-    // below variable is for our table name.
-    public static final String TABLE_NAME = "SextoB";
+    //Nombre de la base de datos
     private static final String DB_NAME = "IngresAR";
 
-    // below variable is for our id column.
+    //Nombre de las columnas
     private static final String ID_COL = "id";
-
-    // below variable is for our course name column
     public static final String NOMBRE_Y_APPELIDO_COL = "Nombre_Y_Apellido";
-
-    // below variable id for our course duration column.
     public static final String DNI_COL = "DNI";
-
-    // below variable for our course description column.
+    public static final String HORA_COL = "Hora";
+    public static final String TARDANZA_COL = "Tarde";
     public static final String GENERO_COL = "Sexo";
-
     public static final String PRESENTE_COL = "Presente";
 
-    // creating a constructor for our database handler.
+    //Crear el constructor de la base de datos (Si la misma no existe)
     public dbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
-    // below method is for creating a database by running a sqlite query
+    //Metodo onCreate
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // on below line we are creating
-        // an sqlite query and we are
-        // setting our column names
-        // along with their data types.
-        String query = "CREATE TABLE " + TABLE_NAME + " ("
-                + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + NOMBRE_Y_APPELIDO_COL + " TEXT,"
-                + DNI_COL + " TEXT,"
-                + GENERO_COL + " TEXT)";
 
-        db.execSQL(query);
     }
 
-    public Cursor BuscarAlumno(String id){
+    //Funcion para buscar el alumno en la base de datos
+    public Cursor BuscarAlumno(String id,Context ctx){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        //String qry = "SELECT * FROM "+TABLE_NAME+" WHERE ID="+id;
-        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE "+DNI_COL+" LIKE "+ "'"+ id + "'",null);
-        return cursor;
-    }
-
-    public Cursor BuscarPresente(String id, Context ctx){
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        //String qry = "SELECT * FROM "+TABLE_NAME+" WHERE ID="+id;
         Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM "+getTodaysTable(ctx)+" WHERE "+DNI_COL+" LIKE "+ "'"+ id + "'",null);
         return cursor;
     }
 
-    // this method is use to add new course to our sqlite database.
+    //Funcion para ingresar asistencia al alumno con la hora a la abase de datos
     public static void IngresarAsistencia(String DNI, String Presente,Context ctx) {
-
-        // on below line we are creating a variable for
-        // our sqlite database and calling writable method
-        // as we are writing data in our database.
+        Calendar calendar = Calendar.getInstance();
+        int hour24hrs = calendar.get(Calendar.HOUR_OF_DAY);
+        int minutes = calendar.get(Calendar.MINUTE);
+        int seconds = calendar.get(Calendar.SECOND);
         dbHelper dbhelp = new dbHelper(ctx);
         SQLiteDatabase db = dbhelp.getWritableDatabase();
-
-        // after adding all values we are passing
-        // content values to our table.
-        db.execSQL("UPDATE "+getTodaysTable(ctx)+" SET "+PRESENTE_COL+" = "+Presente+" WHERE "+DNI_COL+" ="+DNI);
-    }
-
-    // this method is use to add new course to our sqlite database.
-    public static boolean IngresarAlumno(String Nombre, String DNI, String genero,Context ctx) {
-
-        // on below line we are creating a variable for
-        // our sqlite database and calling writable method
-        // as we are writing data in our database.
-        dbHelper dbhelp = new dbHelper(ctx);
-        SQLiteDatabase db = dbhelp.getWritableDatabase();
-
-
-        // on below line we are creating a
-        // variable for content values.
         ContentValues values = new ContentValues();
-
-        // on below line we are passing all values
-        // along with its key and value pair.
-        values.put(NOMBRE_Y_APPELIDO_COL, Nombre);
-        values.put(DNI_COL, DNI);
-        values.put(GENERO_COL, genero);
-
-        // after adding all values we are passing
-        // content values to our table.
-        return db.insert(TABLE_NAME, null, values) > 0;
+        values.put(PRESENTE_COL, Presente);
+        values.put(HORA_COL, hour24hrs + ":" + minutes +":"+ seconds);
+        if(hour24hrs >= 8){
+            values.put(TARDANZA_COL,"Si");
+        } else {
+            values.put(TARDANZA_COL,"No");
+        }
+        db.update(getTodaysTable(ctx), values, "`"+DNI_COL+"`='"+DNI+"'", null);
+        Cursor info = db.rawQuery("select * from "+getTodaysTable(ctx)+" where `" + DNI_COL + "` = '"+DNI+"'",null);
+        if(info.moveToNext()){
+            Log.d("IngresAR","Alumno "+info.getString(info.getColumnIndex(NOMBRE_Y_APPELIDO_COL)) + " esta " + info.getString(info.getColumnIndex(PRESENTE_COL))+ " a la hora " + info.getString(info.getColumnIndex(HORA_COL)));
+        } else {
+            Log.d("IngresAR", "El DNI " + DNI + " no ha sido encontrado");
+        }
+        db.close();
     }
 
+    //Funcion para verificar la existencia de la base de datos diaria
     private static boolean VerificarExistencia(String tableName, Context ctx) {
         dbHelper dbhelp = new dbHelper(ctx);
         SQLiteDatabase db = dbhelp.getWritableDatabase();
@@ -126,11 +92,13 @@ public class dbHelper extends SQLiteOpenHelper {
         return rv;
     }
 
-    public static void AñadirAlumnos(Context ctx) {
+    //Añadir alumnos de Sexto "B" a la base de datos diaria
+    //Se pueden agregar otros cursos tambien con la misma funcion
+    public static void AñadirSextoB(Context ctx) {
         dbHelper dbhelp = new dbHelper(ctx);
         SQLiteDatabase db = dbhelp.getWritableDatabase();
 
-        //Elias Arredondo
+//Elias Arredondo
         ContentValues values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "ELÍAS GERMÁN	ARREDONDO");
         values.put(DNI_COL, "44306594");
@@ -155,7 +123,7 @@ public class dbHelper extends SQLiteOpenHelper {
 //NAZARENO DANIEL BUSI
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "NAZARENO DANIEL BUSI");
-        values.put(DNI_COL, "43827843");
+        values.put(DNI_COL, "44306548");
         values.put(GENERO_COL, "M"); values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
 
@@ -379,6 +347,7 @@ public class dbHelper extends SQLiteOpenHelper {
 
     }
 
+    //Crea la tabla con la fecha actual en la base de datos
     private static String Creartabladiaria() {
         return "CREATE TABLE IF NOT EXISTS " + getCurrentTableName() +
                 "(" +
@@ -386,10 +355,12 @@ public class dbHelper extends SQLiteOpenHelper {
                 + NOMBRE_Y_APPELIDO_COL + " TEXT,"
                 + DNI_COL + " TEXT,"
                 + PRESENTE_COL + " TEXT,"
+                + HORA_COL + " TEXT NULL DEFAULT NULL,"
+                + TARDANZA_COL + " TEXT NULL DEFAULT NULL,"
                 + GENERO_COL + " TEXT)";
     }
 
-
+    //Obtener base de datos de actual y si no esta disponible crearla
     private static String getTodaysTable(Context ctx) {
         dbHelper dbhelp = new dbHelper(ctx);
         SQLiteDatabase db = dbhelp.getWritableDatabase();
@@ -401,16 +372,15 @@ public class dbHelper extends SQLiteOpenHelper {
         return currentTableName;
     }
 
+    //Obtener fecha actual
     private static String getCurrentTableName() {
         SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-YYYY");
-        String currentTableName;
-        return currentTableName = "[" + currentDate.format(System.currentTimeMillis()) + "]";
+        return "[" + currentDate.format(System.currentTimeMillis()) + "]";
     }
 
+    //Actualizador de la base de datos
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // this method is called to check if the table exists already.
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        onCreate(db);
+        //La base de datos siempre va a ser version 1 no hace falta actualizarla
     }
 }
