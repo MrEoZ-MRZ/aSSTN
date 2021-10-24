@@ -1,8 +1,16 @@
 package com.mrz.asstn;
 
+import static com.mrz.asstn.dbHelper.DNI_COL;
+import static com.mrz.asstn.dbHelper.GENERO_COL;
+import static com.mrz.asstn.dbHelper.NOMBRE_Y_APPELIDO_COL;
+import static com.mrz.asstn.dbHelper.TABLE_NAME;
+
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -16,12 +24,26 @@ public class MainActivity extends AppCompatActivity {
     //Declarar boton
     private Button Escanear;
     private Button Añadir;
-    //Lista de presentes
-    private StringBuilder Presentes;
+
+    //Declarar base de datos
     dbHelper mDBHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        VerificarSiSeBoteo();
+    }
+
+    private void VerificarSiSeBoteo() {
+        if(!Preferencias.with(this).read("FirstBoot").equals("false")) {
+            Log.d("IngresAR","Alumnos añadidos");
+            dbHelper.AñadirAlumnos(this);
+            Preferencias.with(this).write("FirstBoot","false");
+        }
+        ConstruirSentencia();
+    }
+
+    private void ConstruirSentencia() {
         mDBHelper = new dbHelper(MainActivity.this);
         //Establecer vista principal
         setContentView(R.layout.activity_main);
@@ -40,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private void handleResult(IntentResult scanResult) {
         if (scanResult != null) {
             updateUI(scanResult.getContents());
@@ -57,15 +80,15 @@ public class MainActivity extends AppCompatActivity {
         String DNI = SPLIT[4];
         Cursor result = mDBHelper.BuscarAlumno(DNI);
         while (result.moveToNext()){
-            String RESULTADO = result.getString(result.getColumnIndex(dbHelper.NOMBRE_Y_APPELIDO_COL));
-            Toast.makeText(this,RESULTADO,Toast.LENGTH_SHORT).show();
-            dbHelper.IngresarAsistencia(APPELLIDO+ " "+NOMBRE,DNI,SEXO,"Presente",this);
+            String RESULTADO = result.getString(result.getColumnIndex(NOMBRE_Y_APPELIDO_COL));
+            dbHelper.IngresarAsistencia(DNI,"Presente",this);
+            Toast.makeText(this,RESULTADO + " PRESENTE",Toast.LENGTH_SHORT).show();
             return;
         } if (!result.moveToNext()){
-            boolean añadido = dbHelper.IngresarAlumno(APPELLIDO+" "+NOMBRE,DNI,SEXO,this);
+            boolean añadido = dbHelper.IngresarAlumno(NOMBRE+" "+APPELLIDO,DNI,SEXO,this);
             if(añadido){
-                Toast.makeText(this,"Se ha añadido correctamente el alumno",Toast.LENGTH_SHORT).show();
-                dbHelper.IngresarAsistencia(APPELLIDO+ " "+NOMBRE,DNI,SEXO,"Presente",this);
+                dbHelper.IngresarAsistencia(DNI,"Presente",this);
+                Toast.makeText(this,"Alumno " + NOMBRE + " Añadido al curso",Toast.LENGTH_SHORT).show();
                 return;
             }
             Toast.makeText(this,"No se ha podido añadir",Toast.LENGTH_SHORT).show();
