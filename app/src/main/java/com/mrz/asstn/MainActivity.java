@@ -5,6 +5,7 @@ import static com.mrz.asstn.dbHelper.NOMBRE_Y_APPELIDO_COL;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +22,7 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
     //Declarar botones
     private Button Escanear;
-    private Button Añadir;
+    private Button Ver;
 
     //Declarar base de datos
     dbHelper mDBHelper;
@@ -31,6 +32,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Verificacion();
+    }
+
+    boolean twice;
+    @Override
+    public void onBackPressed() {
+        if(twice){
+            System.exit(0);
+        }
+        Toast.makeText(this,"Preciona nuevamente para salir",Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(() -> twice = false,2000);
+        twice = true;
     }
 
     //Funcion de verificacion de alumnos
@@ -50,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         //Establecer vista principal
         setContentView(R.layout.activity_main);
         //Asociar boton con el de la vista principal
-        Añadir = findViewById(R.id.showpbtn);
+        Ver = findViewById(R.id.showpbtn);
         Escanear = findViewById(R.id.startbtn);
         //Darle una funcion de onclick
         Escanear.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +73,14 @@ public class MainActivity extends AppCompatActivity {
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.PDF_417);
                 integrator.setPrompt(" Escanea el DNI");
                 integrator.initiateScan();
+            }
+        });
+        Ver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent iniciar = new Intent(MainActivity.this, ActivityDates.class);
+                startActivity(iniciar);
+                finish();
             }
         });
     }
