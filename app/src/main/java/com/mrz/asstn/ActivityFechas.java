@@ -3,7 +3,6 @@ package com.mrz.asstn;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
-import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -16,22 +15,21 @@ import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-public class ActivityDates extends AppCompatActivity {
+public class ActivityFechas extends AppCompatActivity {
     LinearLayout Dates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dates);
+        setContentView(R.layout.activity_fechas);
         dbHelper dbhelp = new dbHelper(this);
         SQLiteDatabase db = dbhelp.getWritableDatabase();
         @SuppressLint("Recycle") Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
         Dates = findViewById(R.id.fechas);
         if (c.moveToFirst()) {
             while ( !c.isAfterLast() ) {
-                if(c.getString(0).equals("android_metadata") || c.getString(0).equals("sqlite_sequence")){
+                if(c.getString(0).equals("android_metadata") || c.getString(0).equals("sqlite_sequence") || c.getString(0).equals("Cursos")){
                     c.moveToNext();
                 } else {
                     Dates.addView(Button(c.getString(0)));
@@ -43,7 +41,7 @@ public class ActivityDates extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(ActivityDates.this, MainActivity.class);
+        Intent intent = new Intent(ActivityFechas.this, MainActivity.class);
         startActivity(intent);
         finish();
     }
@@ -59,7 +57,7 @@ public class ActivityDates extends AppCompatActivity {
         button.setBackgroundColor(Color.parseColor("#1C262D"));
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent iniciar = new Intent(ActivityDates.this,ActivityInfo.class);
+                Intent iniciar = new Intent(ActivityFechas.this, ActivityCursos.class);
                 iniciar.putExtra("Fecha",fecha);
                 startActivity(iniciar);
                 finish();

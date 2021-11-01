@@ -4,15 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ActivityDates">
-
+    tools:context=".ActivityCursos">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="MissingConstraints">
 
         <LinearLayout
-            android:id="@+id/fechas"
+            android:id="@+id/Cursos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />

@@ -21,7 +21,18 @@ public class dbHelper extends SQLiteOpenHelper {
     //Nombre de la base de datos
     private static final String DB_NAME = "IngresAR";
 
-    //Nombre de las columnas
+    //Nombre de la tabla de cursos
+    public static final String CURSOS_TAB = "Cursos";
+
+    //Nombre de las columnas de los cursos
+    private static final String SEXTOB_COL = "6B";
+    private static final String QUINTOB_COL = "5B";
+    private static final String CUARTOB_COL = "4B";
+    private static final String TERCEROB_COL = "3B";
+    private static final String SEGUNDOB_COL = "2B";
+    private static final String PRIMEROB_COL = "1B";
+
+    //Nombre de las columnas de alumnos
     private static final String ID_COL = "id";
     public static final String NOMBRE_Y_APPELIDO_COL = "Nombre_Y_Apellido";
     public static final String DNI_COL = "DNI";
@@ -36,9 +47,18 @@ public class dbHelper extends SQLiteOpenHelper {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
-    //Metodo onCreate
+    //Metodo onCreate para crear la tabla con los cursos
     @Override
     public void onCreate(SQLiteDatabase db) {
+        String CURSOS = "CREATE TABLE " + CURSOS_TAB + " ("
+                + CURSOS_COL + " TEXT NOT NULL);";
+        db.execSQL(CURSOS);
+        db.execSQL("INSERT INTO " + CURSOS_TAB + " (" + CURSOS_COL + ") VALUES ('" + SEXTOB_COL + "')");
+        db.execSQL("INSERT INTO " + CURSOS_TAB + " (" + CURSOS_COL + ") VALUES ('" + QUINTOB_COL + "')");
+        db.execSQL("INSERT INTO " + CURSOS_TAB + " (" + CURSOS_COL + ") VALUES ('" + CUARTOB_COL + "')");
+        db.execSQL("INSERT INTO " + CURSOS_TAB + " (" + CURSOS_COL + ") VALUES ('" + TERCEROB_COL + "')");
+        db.execSQL("INSERT INTO " + CURSOS_TAB + " (" + CURSOS_COL + ") VALUES ('" + SEGUNDOB_COL + "')");
+        db.execSQL("INSERT INTO " + CURSOS_TAB + " (" + CURSOS_COL + ") VALUES ('" + PRIMEROB_COL + "')");
 
     }
 
@@ -109,7 +129,7 @@ public class dbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "ELÍAS GERMÁN	ARREDONDO");
         values.put(DNI_COL, "44306594");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -118,7 +138,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "JUAN PABLO BAGNARDI");
         values.put(DNI_COL, "44731531");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -127,7 +147,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "SERGIO ANGEL	BENTANCOUR");
         values.put(DNI_COL, "43827843");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -136,7 +156,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "NAZARENO DANIEL BUSI");
         values.put(DNI_COL, "44306548");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -145,7 +165,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "MARÍA SOLEDAD CABRERA");
         values.put(DNI_COL, "44525032");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "F");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -154,7 +174,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "MARTÍN FACUNDO CAPOCCETTI");
         values.put(DNI_COL, "44781490");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -163,7 +183,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "MÁXIMO SANTIAGO CHIA");
         values.put(DNI_COL, "44629213");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -172,7 +192,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "ESTEBAN NICOLÁS IVÁN CLAVIJO");
         values.put(DNI_COL, "44290454");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -181,7 +201,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "GUILLERMINA GUADALUPE CÓRDOBA");
         values.put(DNI_COL, "44290480");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "F");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -190,7 +210,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "MILAGROS LUCÍA CORNAGLIA");
         values.put(DNI_COL, "44065983");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "F");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -199,7 +219,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "BENJAMÍN JOSÉ MARÍA COSTANZO");
         values.put(DNI_COL, "44781435");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -208,7 +228,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "IVO CROCI");
         values.put(DNI_COL, "44765934");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -217,7 +237,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "LISET VALERIA FERNANDEZ");
         values.put(DNI_COL, "44781469");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "F");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -226,7 +246,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "THÓMAS FERNANDEZ");
         values.put(DNI_COL, "44630141");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -235,7 +255,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "FRANCISCO BENJAMÍN FERNÁNDEZ");
         values.put(DNI_COL, "44865684");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -244,7 +264,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "TOMÁS AGUSTÍN FRANCO");
         values.put(DNI_COL, "44781614");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -253,7 +273,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "VALENTÍN GALFRÉ");
         values.put(DNI_COL, "44178584");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -262,7 +282,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "LEONARDO EMANUEL GRANDE");
         values.put(DNI_COL, "44781488");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -271,7 +291,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "ALEXIS RICARDO MAINA");
         values.put(DNI_COL, "44630054");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -280,7 +300,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "SOFÍA MAGALÍ MARSÓ");
         values.put(DNI_COL, "44629383");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "F");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -289,7 +309,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "DIEGO GABRIEL MEDINA");
         values.put(DNI_COL, "44777198");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -298,7 +318,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "JOAQUIN RAFAEL NUÑEZ");
         values.put(DNI_COL, "44781478");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -307,7 +327,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "PAULA DANIELA	OSUNA");
         values.put(DNI_COL, "44178649");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "F");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -316,7 +336,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "VIOLETA ETELVINA PIERINI PETROSINO");
         values.put(DNI_COL, "44178599");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "F");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -325,7 +345,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "GUSTAVO EMILIANO POIRIER");
         values.put(DNI_COL, "44731567");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -334,7 +354,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "MATIAS NICOLAS RINALDI");
         values.put(DNI_COL, "44178648");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -344,7 +364,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "ORLANDO NICOLÁS ROMERO");
         values.put(DNI_COL, "44865276");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -353,7 +373,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "VICTOR ANDRÉS	RUIZ DIAZ");
         values.put(DNI_COL, "44765942");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -362,7 +382,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "GABRIEL OCTAVIO RUSCITTI");
         values.put(DNI_COL, "44306455");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -371,7 +391,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "GONZALO NAHUEL RUSCITTI");
         values.put(DNI_COL, "44306520");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -380,7 +400,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "LAUTARO ELÍAS SANTOS RIAL");
         values.put(DNI_COL, "44765908");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -389,7 +409,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "ALESSANDRO GUILLERMO	VARGAS");
         values.put(DNI_COL, "44290356");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -398,7 +418,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "FRANCO VIVA");
         values.put(DNI_COL, "45058369");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -407,7 +427,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "WALTER RUBÉN VIVAS");
         values.put(DNI_COL, "44630026");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
@@ -416,7 +436,7 @@ public class dbHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(NOMBRE_Y_APPELIDO_COL, "HERNÁN ALEJANDRO WILLENER");
         values.put(DNI_COL, "44064686");
-        values.put(CURSOS_COL, "SextoB");
+        values.put(CURSOS_COL, "6B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);

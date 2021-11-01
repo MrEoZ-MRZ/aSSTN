@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         Ver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent iniciar = new Intent(MainActivity.this, ActivityDates.class);
+                Intent iniciar = new Intent(MainActivity.this, ActivityFechas.class);
                 startActivity(iniciar);
                 finish();
             }
