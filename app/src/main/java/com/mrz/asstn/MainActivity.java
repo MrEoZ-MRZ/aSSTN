@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        Verificacion();
     }
 
     boolean twice;
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private void Verificacion() {
         if(!Preferencias.with(this).read(getCurrentTableName()).equals("true")) {
             Log.d("IngresAR","Fecha: "+getCurrentTableName());
-            dbHelper.AñadirSextoB(this);
+            dbHelper.AñadirCursos(this);
             Log.d("IngresAR","Alumnos de Sexto B añadidos");
             Preferencias.with(this).write(getCurrentTableName(),"true");
         }
