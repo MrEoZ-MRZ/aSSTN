@@ -343,21 +343,21 @@ public class Cursos {
         dbHelper dbhelp = new dbHelper(ctx);
         SQLiteDatabase db = dbhelp.getWritableDatabase();
 
-//Elias Arredondo
+//SANTIAGO NICOLA BELLO
         ContentValues values = new ContentValues();
-        values.put(NOMBRE_Y_APPELIDO_COL, "ELÍAS GERMÁN	ARREDONDO");
-        values.put(DNI_COL, "44306594");
-        values.put(CURSOS_COL, "6B");
+        values.put(NOMBRE_Y_APPELIDO_COL, "SANTIAGO NICOLAS BELLO");
+        values.put(DNI_COL, "43959946");
+        values.put(CURSOS_COL, "5B");
         values.put(GENERO_COL, "M");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
 
-//Juan Pablo Bagnardi
+//MILAGROS SOFIA BENITEZ
         values = new ContentValues();
-        values.put(NOMBRE_Y_APPELIDO_COL, "JUAN PABLO BAGNARDI");
-        values.put(DNI_COL, "44731531");
-        values.put(CURSOS_COL, "6B");
-        values.put(GENERO_COL, "M");
+        values.put(NOMBRE_Y_APPELIDO_COL, "MILAGROS SOFIA BENITEZ");
+        values.put(DNI_COL, "45488987");
+        values.put(CURSOS_COL, "5B");
+        values.put(GENERO_COL, "F");
         values.put(PRESENTE_COL, "Ausente");
         db.insert(getTodaysTable(ctx),null,values);
 
