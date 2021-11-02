@@ -27,13 +27,6 @@ public class ActivityAlumnos extends AppCompatActivity {
     LinearLayout Alumnos;
 
     @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(ActivityAlumnos.this, ActivityFechas.class);
-        startActivity(intent);
-        finish();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alumnos);

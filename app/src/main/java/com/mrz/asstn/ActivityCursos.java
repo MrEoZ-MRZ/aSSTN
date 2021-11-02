@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 
 public class ActivityCursos extends AppCompatActivity {
     LinearLayout Cursos;
+
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(ActivityCursos.this, ActivityFechas.class);
@@ -65,7 +66,6 @@ public class ActivityCursos extends AppCompatActivity {
                 iniciar.putExtra("Fecha",fecha);
                 iniciar.putExtra("Curso",curso);
                 startActivity(iniciar);
-                finish();
             }
         });
 

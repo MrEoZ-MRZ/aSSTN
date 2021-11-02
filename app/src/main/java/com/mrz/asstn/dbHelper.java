@@ -1,6 +1,11 @@
 package com.mrz.asstn;
 
+import static com.mrz.asstn.Cursos.AñadirCuartoB;
+import static com.mrz.asstn.Cursos.AñadirPrimeroB;
+import static com.mrz.asstn.Cursos.AñadirQuintoB;
+import static com.mrz.asstn.Cursos.AñadirSegundoB;
 import static com.mrz.asstn.Cursos.AñadirSextoB;
+import static com.mrz.asstn.Cursos.AñadirTerceroB;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -119,6 +124,11 @@ public class dbHelper extends SQLiteOpenHelper {
     //Añadir los cursos registrados
     public static void AñadirCursos(Context ctx) {
         AñadirSextoB(ctx);
+        AñadirQuintoB(ctx);
+        AñadirCuartoB(ctx);
+        AñadirTerceroB(ctx);
+        AñadirSegundoB(ctx);
+        AñadirPrimeroB(ctx);
     }
 
     //Crea la tabla con la fecha actual en la base de datos

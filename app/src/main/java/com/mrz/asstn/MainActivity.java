@@ -87,11 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Verificar resultado de escaneo
     private void handleResult(IntentResult scanResult) {
-        if (scanResult != null && scanResult.getContents().contains("@")) {
-            updateUI(scanResult.getContents());
-        } else {
-            Toast.makeText(this, "No se ha leído nada :(", Toast.LENGTH_SHORT).show();
-        }
+        updateUI(scanResult.getContents());
     }
 
     //Dividir resultado y añadirlo a la base de datos
@@ -131,7 +127,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        final IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        handleResult(scanResult);
+        switch(requestCode) {
+            case IntentIntegrator.REQUEST_CODE:
+            {
+                if (resultCode == RESULT_CANCELED){
+                    Toast.makeText(MainActivity.this, "Escaneo cancelado", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+                    handleResult(scanResult);
+                }
+                break;
+            }
+        }
     }
 }

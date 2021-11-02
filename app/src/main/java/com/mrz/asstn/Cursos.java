@@ -1577,6 +1577,7 @@ public class Cursos {
         db.insert(getTodaysTable(ctx),null,values);
 
     }
+
     //Añadir alumnos de Primero "B" a la base de datos diaria
     //Se pueden agregar otros cursos tambien con la misma funcion
     public static void AñadirPrimeroB(Context ctx) {
