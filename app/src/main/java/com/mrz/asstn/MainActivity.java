@@ -1,5 +1,6 @@
 package com.mrz.asstn;
 
+import static com.mrz.asstn.dbHelper.CURSOS_COL;
 import static com.mrz.asstn.dbHelper.NOMBRE_Y_APPELIDO_COL;
 
 import android.content.Intent;
@@ -101,15 +102,14 @@ public class MainActivity extends AppCompatActivity {
         Cursor result = mDBHelper.BuscarAlumno(DNI,this);
         Calendar calendar = Calendar.getInstance();
         int hour24hrs = calendar.get(Calendar.HOUR_OF_DAY);
-        int minutes = calendar.get(Calendar.MINUTE);
-        int seconds = calendar.get(Calendar.SECOND);
         while (result.moveToNext()){
-            String RESULTADO = result.getString(result.getColumnIndex(NOMBRE_Y_APPELIDO_COL));
+            String ALUMNO = result.getString(result.getColumnIndex(NOMBRE_Y_APPELIDO_COL));
+            String CURSO = result.getString(result.getColumnIndex(CURSOS_COL));
             dbHelper.IngresarAsistencia(DNI,"Presente",this);
             if(hour24hrs >= 8){
-                Toast.makeText(this,RESULTADO + " TARDANZA",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,ALUMNO +" "+ CURSO  +" TARDANZA",Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this,RESULTADO + " PRESENTE",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,ALUMNO +" "+ CURSO +" PRESENTE",Toast.LENGTH_SHORT).show();
             }
             return;
         } if (!result.moveToNext()){

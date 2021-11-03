@@ -81,12 +81,11 @@ public class dbHelper extends SQLiteOpenHelper {
         Calendar calendar = Calendar.getInstance();
         int hour24hrs = calendar.get(Calendar.HOUR_OF_DAY);
         int minutes = calendar.get(Calendar.MINUTE);
-        int seconds = calendar.get(Calendar.SECOND);
         dbHelper dbhelp = new dbHelper(ctx);
         SQLiteDatabase db = dbhelp.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(PRESENTE_COL, Presente);
-        values.put(HORA_COL, hour24hrs + ":" + minutes +":"+ seconds);
+        values.put(HORA_COL, hour24hrs + ":" + minutes);
         if(hour24hrs >= 8){
             values.put(TARDANZA_COL,"Si");
         } else {
