@@ -4,24 +4,38 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 import static com.mrz.asstn.dbHelper.CURSOS_COL;
+import static com.mrz.asstn.dbHelper.CURSOS_TAB;
 import static com.mrz.asstn.dbHelper.HORA_COL;
 import static com.mrz.asstn.dbHelper.NOMBRE_Y_APPELIDO_COL;
 import static com.mrz.asstn.dbHelper.PRESENTE_COL;
 import static com.mrz.asstn.dbHelper.TARDANZA_COL;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 public class ActivityAlumnos extends AppCompatActivity {
     LinearLayout Alumnos;
