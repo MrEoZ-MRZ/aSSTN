@@ -3,6 +3,16 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\MrEoZ\\AndroidStudioProjects\\aSSTN\\app\\\\aSSN.jks')
+            //storeFile file('C:\\Users\\Alumno\\AndroidStudioProjects\\aSSTN\\app\\\\aSSN.jks')
+            keyAlias 'aSSN'
+            storePassword 'aSSN1234'
+            keyPassword 'aSSN1234'
+        }
+    }
+
     compileSdkVersion 30
     buildToolsVersion "29.0.3"
 
