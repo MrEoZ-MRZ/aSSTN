@@ -160,15 +160,33 @@ public class ActivityCursos extends AppCompatActivity {
         document.add(table);
         document.addCreationDate();
         document.close();
-        Intent target = new Intent(Intent.ACTION_VIEW);
-        target.setDataAndType(Uri.fromFile(file),"application/pdf");
-        target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        MostrarDialogoAbrir(curss, fecha);
+    }
 
-        Intent intent = Intent.createChooser(target, "Open File");
-        try {
-            startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            // Instruct the user to install a PDF reader here, or something
-        }
+    private void MostrarDialogoAbrir(String curso, String fecha) {
+        AlertDialog.Builder ask = new AlertDialog.Builder(ActivityCursos.this);
+        ask.setTitle("Atencion");
+        ask.setMessage("Desea abrir el PDF creado?");
+        ask.setCancelable(false);
+        ask.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String dir = getApplicationContext().getExternalFilesDir("").getPath() + File.separator + "PDFS";
+                File folder = new File(dir);
+                folder.mkdirs();
+                File file = new File(dir, "Informacion de " + curso + " " + fecha + ".pdf");
+                Intent target = new Intent(Intent.ACTION_VIEW);
+                target.setDataAndType(Uri.fromFile(file), "application/pdf");
+                target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                Intent intent = Intent.createChooser(target, "Open File");
+                startActivity(intent);
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        ask.show();
     }
 }
