@@ -12,6 +12,7 @@ import static com.mrz.asstn.dbHelper.TARDANZA_COL;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
@@ -171,15 +172,16 @@ public class ActivityCursos extends AppCompatActivity {
         ask.setPositiveButton("Si", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                String dir = getApplicationContext().getExternalFilesDir("").getPath() + File.separator + "PDFS";
+                String dir = getApplicationContext().getExternalFilesDir("").getPath()+File.separator+"PDFS";
                 File folder = new File(dir);
                 folder.mkdirs();
-                File file = new File(dir, "Informacion de " + curso + " " + fecha + ".pdf");
+                File file = new File(dir, "Informacion de "+curso+" "+fecha+".pdf");
                 Intent target = new Intent(Intent.ACTION_VIEW);
-                target.setDataAndType(Uri.fromFile(file), "application/pdf");
-                target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                Intent intent = Intent.createChooser(target, "Open File");
-                startActivity(intent);
+                Uri uri = FileProvider.getUriForFile(ActivityCursos.this, ActivityCursos.this.getApplicationContext().getPackageName() + ".provider", file);
+                target.setDataAndType(uri,"application/pdf");
+                target.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                startActivity(target);
             }
         }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
